@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The North Pole - Outdoor Gear</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100;
+            height: 100;
+            font-family: Arial, sans-serif;
+            background-color: #00000000;
+            color: #000000;
+            overflow-x: hidden;
+        }
+        .background-image {
+            width: 100%;
+            height: 100vh;
+            background-image: url('image/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        header {
+            background: #0000005d;
+            color: #fff;
+        }
+        header .logo a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            flex: 3;
+            justify-content: flex-end;
+        }
+
+        nav ul.nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul.nav-links li {
+            display: inline;
+        }
+
+        nav ul.nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: large;
+        }
+        .search-login {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .search-login input {
+            padding: 5px;
+            background: #333;
+            border: none;
+            color: #fff;
+        }
+
+        .search-login input::placeholder {
+            color: #ccccccfe;
+        }
+        
+        .search-login a {
+            color: #fff;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #030303ef;
+            text-align: center;
+        }
+        .hero-content {
+            background: rgba(0, 0, 0, 0.123);
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            color: #fff;
+        }
+        .hero .btn {
+            background: #00000048;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">THENORTHPOLE</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">首頁</a></li>
+                    <li><a href="shop.html">商品</a></li>
+                    <li><a href="#">關於</a></li>
+                </ul>
+                <div class="search-login">
+                    <input type="text" placeholder="Search...">
+                    <a href="login.html" id="login-link">登入</a>
+                    <a href="account.html" id="account-link" style="display:none;">帳戶</a>
+                    <a href="cart.html" class="cart"><img src="image/cart.png" width="35" alt="Cart"></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PLAN YOUR ADVENTURE</h1>
+            <a href="shop.html" class="btn">SHOP NOW</a>
+        </div>
+
+
+    <script>
+        src="sessionCheck.js"
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/user/session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('login-link').style.display = 'none';
+                        document.getElementById('account-link').style.display = 'block';
+                    } else {
+                        document.getElementById('login-link').style.display = 'block';
+                        document.getElementById('account-link').style.display = 'none';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
