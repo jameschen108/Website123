@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - The North Pole</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        header {
+            background: #000;
+            color: #fff;
+            padding: 20px 0;
+            box-sizing: border-box;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+        .nav a {
+            margin-left: 25px;
+            color: white;
+            text-decoration: none;
+            font-size: large;
+        }
+        .main {
+            padding-top: 120px;
+            padding-bottom: 50px;
+        }
+        .order-container {
+            background: #1b1b1b;
+            padding: 20px;
+            width: 50%;
+            margin: 0 auto;
+            box-sizing: border-box;
+            border: 1px solid #333;
+        }
+        .order-container h1 {
+            margin-top: 0;
+        }
+        .order-info {
+            margin-bottom: 20px;
+        }
+        .order-info label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">THENORTHPOLE</a>
+            </div>
+            <div class="nav">
+                <a href="index.html">首頁</a>
+                <a href="#">關於</a>
+                <a href="account.html">帳戶</a>
+                <a href="cart.html"><img src="image/cart.png" width="35" alt="Cart"></a>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+        <div class="order-container">
+            <h1>訂單明細</h1>
+            <div id="order-details"></div>
+        </div>
+    </div>
+    <script>
+        src="sessionCheck.js" 
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderId = new URLSearchParams(window.location.search).get('orderId');
+            fetch(`/api/order/${orderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let orderHTML = `
+                            <p>Order ID: ${data.order.orderId}</p>
+                            <p>User ID: ${data.order.userId}</p>
+                            <p>Order Date: ${data.order.orderDate}</p>
+                            <p>Total Amount: $${data.order.totalAmount.toFixed(2)}</p>
+                            <h2>Items</h2>
+                        `;
+                        data.items.forEach(item => {
+                            orderHTML += `
+                                <p>${item.productName} - $${item.productPrice} x ${item.quantity}</p>
+                            `;
+                        });
+                        document.getElementById('order-details').innerHTML = orderHTML;
+                    } else {
+                        document.getElementById('order-details').innerHTML = '<p>Order not found</p>';
+                    }
+                });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/user/session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('login-link').style.display = 'none';
+                        document.getElementById('account-link').style.display = 'inline';
+                    } else {
+                        document.getElementById('login-link').style.display = 'inline';
+                        document.getElementById('account-link').style.display = 'none';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
